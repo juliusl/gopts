@@ -17,9 +17,8 @@ func Parse(configure Configure, usage Usage) error {
 		configure = Echo
 	}
 
-	args := os.Args
-	for i := 0; len(args) > 1 && i+2 < len(os.Args); i++ {
-		args = os.Args[i+1 : i+3]
+	args := os.Args[1:]
+	for i := 3; i <= len(os.Args); i += 2 {
 		option := strings.TrimLeft(args[0], "-")
 		value := args[1]
 
@@ -31,6 +30,12 @@ func Parse(configure Configure, usage Usage) error {
 			}
 			return err
 		}
+
+		if i+2 > len(os.Args) {
+			return nil
+		}
+
+		args = os.Args[i : i+2]
 	}
 
 	return nil
